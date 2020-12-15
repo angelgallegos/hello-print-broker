@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  php:
+    build: operations/docker/php-apache
+    ports:
+      - 90:80
+    links:
+      - postgres
+    volumes:
+      - ./src:/var/www/src
+      - ./vendor:/var/www/vendor
+    environment:
+      - PHP_IDE_CONFIG=serverName=broker
+
+  postgres:
+    image: postgres:9.4.8
+    environment:
+      - POSTGRES_USER=broker
+      - POSTGRES_PASSWORD=broker
+      - POSTGRES_DB=broker

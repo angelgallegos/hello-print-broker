@@ -1,0 +1,7 @@
+doctrine:
+  orm:
+    isDevMode: false
+    useSimpleAnnotationReader: false
+    mappings:
+      App:
+        dir: '%app.project_dir%/src/app/Entities'

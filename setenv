@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+# Description:
+# one-off convenience command to initialize terminal.
+
+# Usage:
+# $ source setenv
+
+# Advanced usage
+# add your own setenv.${USER} file to add your own tricks
+
+# Example content of setenv.AikoM (remove prefixed #'s):
+
+# export N_PREFIX=${HOME}/.n/$(basename ${PWD})
+# N_PATH=${N_PREFIX}/bin
+# case ":$PATH:" in
+#  *":$N_PATH:"*) :;; # already there
+#  *) export PATH="$N_PATH:$PATH";; # or PATH="$PATH:$new_entry"
+# esac
+
+# end example setenv.AikoM
+
+MACHINE_NAME='broker'
+export COMPOSE_PROJECT_NAME=${MACHINE_NAME}
+
+# add ${HOME}/bin to PATH
+LOCAL_BIN=${PWD}/bin
+case ":$PATH:" in
+  *":$LOCAL_BIN:"*) :;; # already there
+  *) export PATH="$LOCAL_BIN:$PATH";; # or PATH="$PATH:$new_entry"
+esac
+
+
+export broker_HOME=$PWD
+# make ops_home easily available to other scripts
+export OPS_HOME=$PWD/operations
+
+if [ -f ./setenv.shared ]; then
+  source ./setenv.shared
+fi
+
+if [ -f ./setenv.${USER} ]; then
+  source ./setenv.${USER}
+fi
+
+if [ -f ./.version ]; then
+  export $(cat ./.version | xargs)
+fi
+
+source ${OPS_HOME}/utils/echo.sh
+
+./bin/copy.files.sh
+
+./bootstrap.sh || \
+ echo_error "running bootstrap.sh"
+
+echo_info Setting environment for docker-machine ${bold}${MACHINE_NAME}${normal}
+eval "$(docker-machine env ${MACHINE_NAME})"
