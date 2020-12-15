@@ -9,7 +9,7 @@ Service which creates messages and send them to the Kafka topics
  - [Virtualbox](https://www.virtualbox.org/)
  - [Composer](https://getcomposer.org/)
 
-##Before
+## Before
 
 The dependencies of the project need to be satisfied, for that
 if you have composer installed globally run:
