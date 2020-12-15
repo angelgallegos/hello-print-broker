@@ -59,7 +59,7 @@ from the root of the project.
 After the machine gets created you can run the application with:
 
 ```
-$ dobi dev
+$ docker-compose up
 ```
 
 or if you prefer simply run docker compose
